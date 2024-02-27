@@ -9,7 +9,7 @@ and crashes across its backends. This repository contains the source code for th
 
 ## Build from Source
 ```shell
-git clone --recurse-submodules git@github.com:fuzz-d/fuzz-d.git
+git clone --recurse-submodules git@github.com:khemichew/fuzz-d.git
 cd fuzz-d
 ./gradlew build
 ```

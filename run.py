@@ -3,6 +3,7 @@
 import time
 import os
 
+from pathlib import Path
 from distutils.dir_util import copy_tree
 
 def getErrorDirectories():
@@ -47,7 +48,9 @@ def copyDirectories(directories, directory):
 if __name__ == '__main__':
     timeout_start = time.time()
     timeout_secs = 60 * 60 * 8 # 8 hours
-    base_command = "timeout 60 java -jar /home/alex/fuzz-d/app/build/libs/app.jar fuzz"
+    binary_path = Path(os.getcwd()) / 'app/build/libs/app.jar'
+    individual_timeout = 60
+    base_command = f"timeout {individual_timeout} java -jar {binary_path} fuzz"
     while time.time() < timeout_start + timeout_secs:
         for i in range(10):
             print(time.time())

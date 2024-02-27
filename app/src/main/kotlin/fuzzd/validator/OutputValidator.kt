@@ -6,6 +6,7 @@ import fuzzd.validator.executor.execution_handler.GoExecutionHandler
 import fuzzd.validator.executor.execution_handler.JavaExecutionHandler
 import fuzzd.validator.executor.execution_handler.JsExecutionHandler
 import fuzzd.validator.executor.execution_handler.PyExecutionHandler
+import fuzzd.validator.executor.execution_handler.RustExecutionHandler
 import fuzzd.validator.executor.execution_handler.VerificationHandler
 import java.io.File
 
@@ -24,6 +25,7 @@ class OutputValidator {
             PyExecutionHandler(fileDirPath, mainFileName),
             JavaExecutionHandler(fileDirPath, mainFileName),
             GoExecutionHandler(fileDirPath, mainFileName),
+            RustExecutionHandler(fileDirPath, mainFileName),
         )
 
         return if (verifier) {
