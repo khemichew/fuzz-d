@@ -17,5 +17,7 @@ build
 
 node_modules
 
+# Ignore Visual Studio temporary files
+.vscode
 
 output/*
