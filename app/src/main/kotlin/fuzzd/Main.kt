@@ -1,6 +1,7 @@
 package fuzzd
 
 import fuzzd.logging.Logger
+import fuzzd.utils.BackendTarget
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
@@ -26,11 +27,19 @@ class Fuzz : Subcommand("fuzz", "Generate programs to test Dafny") {
         "Instrument control flow with print statements for debugging program paths",
     )
     private val swarm by option(ArgType.Boolean, "swarm", "sw", "Run with swarm testing enabled")
+
     private val noRun by option(
         ArgType.Boolean,
         "noRun",
         "n",
         "Generate a program without running differential testing on it",
+    )
+
+    private val target by option(
+        ArgType.String,
+        "target",
+        "t",
+        "Target generation for specific backend."
     )
 
     private val outputFile by option(ArgType.String, "output", "o", "Directory for output")
@@ -50,14 +59,26 @@ class Fuzz : Subcommand("fuzz", "Generate programs to test Dafny") {
         val logger = Logger(fileDir)
         val generationSeed = seed?.toLong() ?: Random.Default.nextLong()
 
+        // Parse backend target (Rust, C#, Python, JS, Go, Java)
+        val backend = when (target) {
+            "rust" -> BackendTarget.RUST
+            "java" -> BackendTarget.JAVA
+            "javascript" -> BackendTarget.JAVASCRIPT
+            "go" -> BackendTarget.GO
+            "python" -> BackendTarget.PYTHON
+            "csharp" -> BackendTarget.CSHARP
+            else -> BackendTarget.ALL
+        }
+
         try {
             FuzzRunner(fileDir, logger).run(
                 generationSeed,
-                advanced == true,
-                instrument == true,
-                noRun != true,
-                swarm == true,
-                verifier == true,
+                advanced = advanced == true,
+                instrument = instrument == true,
+                run = noRun != true,
+                swarm = swarm == true,
+                verifier = verifier == true,
+                backend = backend
             )
         } catch (e: Exception) {
             e.printStackTrace()
