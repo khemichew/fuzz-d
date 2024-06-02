@@ -20,13 +20,13 @@ enum class BackendTarget {
 sealed class SupportedFeaturesRetriever {
     companion object {
         val BACKEND_SUPPORTED_FEATURES = mapOf(
-            BackendTarget.RUST to RustSupportedFeatures(),
-            BackendTarget.CSHARP to CSharpSupportedFeatures(),
-            BackendTarget.JAVASCRIPT to JavaScriptSupportedFeatures(),
-            BackendTarget.GO to GoSupportedFeatures(),
-            BackendTarget.PYTHON to PythonSupportedFeatures(),
-            BackendTarget.JAVA to JavaSupportedFeatures(),
-            BackendTarget.ALL to AllSupportedFeatures(),
+            BackendTarget.RUST to RustBackendFeatures(),
+            BackendTarget.CSHARP to CSharpBackendFeatures(),
+            BackendTarget.JAVASCRIPT to JavaScriptBackendFeatures(),
+            BackendTarget.GO to GoBackendFeatures(),
+            BackendTarget.PYTHON to PythonBackendFeatures(),
+            BackendTarget.JAVA to JavaBackendFeatures(),
+            BackendTarget.ALL to AllBackendFeatures(),
         )
     }
 }

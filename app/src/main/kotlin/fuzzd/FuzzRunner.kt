@@ -17,7 +17,7 @@ class FuzzRunner(private val dir: File, private val logger: Logger) {
     private val reconditionRunner = ReconditionRunner(dir, logger)
 
     fun run(seed: Long, advanced: Boolean, instrument: Boolean, run: Boolean, swarm: Boolean, verifier: Boolean, backend: BackendTarget) {
-        var excludedFeatures = SupportedFeaturesRetriever.BACKEND_SUPPORTED_FEATURES[backend]!!.GetBackendNonSupportedFeatures()
+        var excludedFeatures = SupportedFeaturesRetriever.BACKEND_SUPPORTED_FEATURES[backend]!!.NonSupportedFeatures()
 
         if (swarm) {
             excludedFeatures = excludedFeatures.minus(
