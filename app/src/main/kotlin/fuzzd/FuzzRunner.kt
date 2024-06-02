@@ -2,6 +2,7 @@ package fuzzd
 
 import fuzzd.generator.Generator
 import fuzzd.generator.selection.SelectionManager
+import fuzzd.generator.selection.probability_manager.FeatureSupportedProbabilityManager
 import fuzzd.generator.selection.probability_manager.ProbabilityManager
 import fuzzd.generator.selection.probability_manager.RandomProbabilityManager
 import fuzzd.generator.selection.probability_manager.VerifierProbabilityManager
@@ -25,7 +26,9 @@ class FuzzRunner(private val dir: File, private val logger: Logger) {
             )
         }
 
-        val probabilityManager = RandomProbabilityManager(seed, excludedFeatures)
+        val probabilityManager =
+            if (swarm) RandomProbabilityManager(seed, excludedFeatures)
+            else FeatureSupportedProbabilityManager(excludedFeatures)
 
         val generator = Generator(
             SelectionManager(

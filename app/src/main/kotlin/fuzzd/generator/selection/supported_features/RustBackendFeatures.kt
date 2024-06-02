@@ -29,7 +29,7 @@ import kotlin.reflect.KFunction
         ProbabilityManager::ifStatement,
         ProbabilityManager::matchStatement,
 //        ProbabilityManager::forallStatement,
-         ProbabilityManager::forLoopStatement,
+//         ProbabilityManager::forLoopStatement,
         ProbabilityManager::whileStatement,
         ProbabilityManager::methodCall,
          ProbabilityManager::mapAssign,
