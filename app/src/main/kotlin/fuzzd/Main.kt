@@ -139,6 +139,13 @@ class VerifierFuzz : Subcommand("verifuzz", "Run fuzzing over the Dafny verifier
         "Generate a program without running differential testing on it",
     )
 
+    private val target by option(
+        ArgType.String,
+        "target",
+        "t",
+        "Target generation for specific backend."
+    )
+
     private val outputFile by option(ArgType.String, "output", "o", "Directory for output")
 
     override fun execute() {
@@ -153,11 +160,26 @@ class VerifierFuzz : Subcommand("verifuzz", "Run fuzzing over the Dafny verifier
             File("$path/$dir")
         }
 
+        // Parse backend target (Rust, C#, Python, JS, Go, Java)
+        val backend = when (target) {
+            "rs" -> BackendTarget.RUST
+            "java" -> BackendTarget.JAVA
+            "js" -> BackendTarget.JAVASCRIPT
+            "go" -> BackendTarget.GO
+            "py" -> BackendTarget.PYTHON
+            "cs" -> BackendTarget.CSHARP
+            else -> BackendTarget.ALL
+        }
+
         val logger = Logger(fileDir)
         val generationSeed = seed?.toLong() ?: Random.Default.nextLong()
 
         try {
-            VerifierFuzzRunner(fileDir, logger).run(generationSeed, noRun != true)
+            VerifierFuzzRunner(fileDir, logger).run(
+                generationSeed,
+                run = noRun != true,
+                backend = backend
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {

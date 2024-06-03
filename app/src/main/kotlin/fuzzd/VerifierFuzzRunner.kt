@@ -7,10 +7,7 @@ import fuzzd.generator.selection.probability_manager.VerifierProbabilityManager
 import fuzzd.logging.Logger
 import fuzzd.logging.OutputWriter
 import fuzzd.mutation.VerifierAnnotationMutator
-import fuzzd.utils.DAFNY_GENERATED
-import fuzzd.utils.DAFNY_MAIN
-import fuzzd.utils.DAFNY_TYPE
-import fuzzd.utils.WRAPPER_FUNCTIONS
+import fuzzd.utils.*
 import fuzzd.validator.OutputValidator
 import java.io.File
 import kotlin.random.Random
@@ -18,11 +15,12 @@ import kotlin.random.Random
 class VerifierFuzzRunner(private val dir: File, private val logger: Logger) {
     private val reconditionRunner = ReconditionRunner(dir, logger)
 
-    fun run(seed: Long, run: Boolean = true) {
+    fun run(seed: Long, run: Boolean = true, backend: BackendTarget) {
+        val excludedFeatures = SupportedFeaturesRetriever.BACKEND_SUPPORTED_FEATURES[backend]!!.NonSupportedFeatures()
         val random = Random(seed)
         val probabilityManager = VerifierProbabilityManager(BaseProbabilityManager())
         val selectionManager = SelectionManager(random, probabilityManager)
-        val generator = Generator(selectionManager, globalState = false, verifier = true)
+        val generator = Generator(unsupportedFeatures = excludedFeatures, selectionManager, globalState = false, verifier = true)
 
         logger.log { "Verifier Fuzzing with seed: $seed" }
         println("Verifier Fuzzing with seed: $seed")
