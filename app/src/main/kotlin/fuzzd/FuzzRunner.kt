@@ -36,6 +36,7 @@ class FuzzRunner(private val dir: File, private val logger: Logger) {
             selectionManager =  SelectionManager(
                 Random(seed),
                 if (verifier) VerifierProbabilityManager(probabilityManager, typeDepthLimit) else probabilityManager,
+                unsupportedFeatures = excludedFeatures,
             ),
             globalState = !verifier,
             verifier = verifier,
