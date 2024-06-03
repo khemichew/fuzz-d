@@ -32,13 +32,14 @@ class FuzzRunner(private val dir: File, private val logger: Logger) {
             else FeatureSupportedProbabilityManager(excludedFeatures, typeDepthLimit)
 
         val generator = Generator(
-            SelectionManager(
+            unsupportedFeatures = excludedFeatures,
+            selectionManager =  SelectionManager(
                 Random(seed),
                 if (verifier) VerifierProbabilityManager(probabilityManager, typeDepthLimit) else probabilityManager,
             ),
             globalState = !verifier,
             verifier = verifier,
-            instrument,
+            instrument = instrument
         )
 
         logger.log { "Fuzzing with seed: $seed" }

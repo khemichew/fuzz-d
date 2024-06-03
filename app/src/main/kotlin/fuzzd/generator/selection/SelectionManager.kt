@@ -234,8 +234,24 @@ class SelectionManager(
         val ifStatementProbability = if (context.statementDepth < MAX_STATEMENT_DEPTH) min(probabilityManager.ifStatement() / context.statementDepth, 0.3) else 0.0
         val matchProbability = if (context.statementDepth < MAX_STATEMENT_DEPTH) min(probabilityManager.matchStatement() / context.statementDepth, 0.3) else 0.0
         val whileStatementProbability = if (context.statementDepth == 1) probabilityManager.whileStatement() else 0.0
-        val forLoopProbability = if (context.statementDepth == 1) probabilityManager.forLoopStatement() else 0.0
-        val forallProbability = if (context.statementDepth == 1) min(probabilityManager.forallStatement(), 0.2) else 0.0 // if statement due to DAFNY#3969
+
+        val forLoopProbability: Double = if (context.unsupportedFeatures.contains(ProbabilityManager::forLoopStatement)) {
+            0.0
+        } else if (context.statementDepth == 1) {
+            probabilityManager.forLoopStatement()
+        } else {
+            0.0
+        }
+
+        val forallProbability = if (context.unsupportedFeatures.contains(ProbabilityManager::forallStatement))
+        {
+            0.0
+        } else if (context.statementDepth == 1) { // if statement due to DAFNY#3969
+            min(probabilityManager.forallStatement(), 0.2)
+        }
+        else {
+            0.0
+        }
 
         val methodCallProbability = if (methodCalls) {
             val methodCallProbability = min(probabilityManager.methodCall(), 0.1)

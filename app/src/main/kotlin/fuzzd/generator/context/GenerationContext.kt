@@ -7,10 +7,12 @@ import fuzzd.generator.ast.identifier_generator.NameGenerator.LoopCounterGenerat
 import fuzzd.generator.symbol_table.FunctionSymbolTable
 import fuzzd.generator.symbol_table.GlobalSymbolTable
 import fuzzd.generator.symbol_table.SymbolTable
+import kotlin.reflect.KFunction
 
 data class GenerationContext(
     val globalSymbolTable: GlobalSymbolTable,
     val functionSymbolTable: FunctionSymbolTable,
+    val unsupportedFeatures: Set<KFunction<*>>,
     val statementDepth: Int = 1,
     val expressionDepth: Int = 1,
     val classGenerationDepth: Int = 1,
@@ -35,6 +37,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth,
             expressionDepth + 1,
             classGenerationDepth,
@@ -51,6 +54,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth,
             expressionDepth + 1,
             classGenerationDepth,
@@ -67,6 +71,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth + 1,
             expressionDepth,
             classGenerationDepth,
@@ -83,6 +88,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth,
             expressionDepth,
             classGenerationDepth + 1,
@@ -99,6 +105,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth,
             expressionDepth,
             classGenerationDepth,
@@ -115,6 +122,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth,
             expressionDepth,
             classGenerationDepth,
@@ -131,6 +139,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth,
             expressionDepth,
             classGenerationDepth,
@@ -147,6 +156,7 @@ data class GenerationContext(
         GenerationContext(
             globalSymbolTable,
             functionSymbolTable,
+            unsupportedFeatures,
             statementDepth,
             expressionDepth,
             classGenerationDepth,
