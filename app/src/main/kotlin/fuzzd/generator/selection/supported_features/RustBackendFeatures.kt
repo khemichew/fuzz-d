@@ -86,6 +86,7 @@ class RustBackendFeatures : BackendFeatures() {
 //        ProbabilityManager::numberOfTraits,
 
         ProbabilityManager::maxNumberOfAssigns,
+        ProbabilityManager::maxTypeDepth,
 
         // Verification mutation
         ProbabilityManager::mutateVerificationCondition,

@@ -62,20 +62,30 @@ import fuzzd.generator.selection.StatementType.METHOD_CALL
 import fuzzd.generator.selection.StatementType.MULTI_ASSIGN
 import fuzzd.generator.selection.StatementType.WHILE
 import fuzzd.generator.selection.probability_manager.BaseProbabilityManager
+import fuzzd.generator.selection.probability_manager.FeatureSupportedProbabilityManager
 import fuzzd.generator.selection.probability_manager.ProbabilityManager
 import fuzzd.utils.unionAll
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
 import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
 
 class SelectionManager(
     private val random: Random,
-    private val probabilityManager: ProbabilityManager = BaseProbabilityManager(),
+    private val probabilityManager: ProbabilityManager = FeatureSupportedProbabilityManager(),
+    private val unsupportedFeatures: Set<KFunction<*>> = setOf()
 ) {
     fun selectType(context: GenerationContext, depth: Int = 1): Type {
         val classTypeProb = if (context.onDemandIdentifiers && context.globalSymbolTable.hasClasses()) probabilityManager.classType() / context.classGenerationDepth else 0.0
-        val traitTypeProb = if (context.onDemandIdentifiers && context.globalSymbolTable.hasTraits()) probabilityManager.traitType() / context.classGenerationDepth else 0.0
+        val traitTypeProb =
+            if (context.unsupportedFeatures.contains(ProbabilityManager::traitType))
+            {
+                0.0
+            } else if (context.onDemandIdentifiers && context.globalSymbolTable.hasTraits()) {
+                probabilityManager.traitType() / context.classGenerationDepth
+            } else 0.0
+
         val datatypeProb = if (context.globalSymbolTable.hasAvailableDatatypes(context.onDemandIdentifiers)) probabilityManager.datatype() / context.expressionDepth else 0.0
 
         val selection = listOf<Pair<(GenerationContext, Int) -> Type, Double>>(
@@ -442,9 +452,17 @@ class SelectionManager(
 
     fun selectNumberOfMethods() = random.nextInt(0, MAX_METHODS)
 
-    fun selectNumberOfTraits() = randomWeightedSelection(listOf(0 to 0.4, 1 to 0.4, 2 to 0.15, 3 to 0.05))
+    fun selectNumberOfTraits() = if (unsupportedFeatures.contains(ProbabilityManager::traitType)) {
+        0
+    } else {
+        randomWeightedSelection(listOf(0 to 0.4, 1 to 0.4, 2 to 0.15, 3 to 0.05))
+    }
 
-    fun selectNumberOfTraitInherits() = random.nextInt(0, MAX_TRAIT_INHERITS)
+    fun selectNumberOfTraitInherits() = if (unsupportedFeatures.contains(ProbabilityManager::traitType)) {
+        0
+    } else{
+        random.nextInt(0, MAX_TRAIT_INHERITS)
+    }
 
     fun selectNumberOfAssigns(): Int = random.nextInt(1, probabilityManager.maxNumberOfAssigns() + 1) // include max of probability manager with +1
 
