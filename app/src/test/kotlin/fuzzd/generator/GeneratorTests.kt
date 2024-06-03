@@ -19,13 +19,13 @@ class GeneratorTests {
 
     @BeforeEach
     fun setup() {
-        generator = Generator(selectionManager, globalState = true, verifier = false)
+        generator = Generator(unsupportedFeatures = setOf(), selectionManager, globalState = true, verifier = false)
     }
 
     @Test
     fun givenOnDemandIdentifiersDisabled_whenGenerateIdentifierWithNoneAvailable_expectIdentifierOnDemandException() {
         // given
-        val context = GenerationContext(GlobalSymbolTable(), FunctionSymbolTable(), onDemandIdentifiers = false)
+        val context = GenerationContext(GlobalSymbolTable(), FunctionSymbolTable(), unsupportedFeatures = setOf(), onDemandIdentifiers = false)
 
         // expect
         assertFailsWith<IdentifierOnDemandException> {
