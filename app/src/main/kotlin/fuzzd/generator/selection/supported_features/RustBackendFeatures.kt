@@ -3,7 +3,7 @@ package fuzzd.generator.selection.supported_features
 import fuzzd.generator.selection.probability_manager.ProbabilityManager
 import kotlin.reflect.KFunction
 
- class RustBackendFeatures: BackendFeatures() {
+class RustBackendFeatures : BackendFeatures() {
     private val SUPPORTED_FEATURES: Set<KFunction<*>> = setOf(
         ProbabilityManager::classType,
         // ProbabilityManager::traitType,
@@ -15,7 +15,7 @@ import kotlin.reflect.KFunction
         // Datastructure types
         ProbabilityManager::setType,
         // ProbabilityManager::multisetType,
-         ProbabilityManager::mapType,
+        //  ProbabilityManager::mapType,
         ProbabilityManager::sequenceType,
         ProbabilityManager::stringType,
 
@@ -30,9 +30,9 @@ import kotlin.reflect.KFunction
         ProbabilityManager::matchStatement,
 //        ProbabilityManager::forallStatement,
 //         ProbabilityManager::forLoopStatement,
-        ProbabilityManager::whileStatement,
+        // ProbabilityManager::whileStatement,
         ProbabilityManager::methodCall,
-         ProbabilityManager::mapAssign,
+        // ProbabilityManager::mapAssign,
         ProbabilityManager::assignStatement,
         ProbabilityManager::multiAssignStatement,
         ProbabilityManager::classInstantiation,
@@ -57,13 +57,13 @@ import kotlin.reflect.KFunction
         ProbabilityManager::identifier,
         ProbabilityManager::literal,
         ProbabilityManager::constructor,
-        ProbabilityManager::comprehension,
+        // ProbabilityManager::comprehension,
 
         ProbabilityManager::comprehensionConditionIntRange,
 
         // Index type
         ProbabilityManager::arrayIndexType,
-        ProbabilityManager::mapIndexType,
+        // ProbabilityManager::mapIndexType,
 //        ProbabilityManager::multisetIndexType,
         ProbabilityManager::sequenceIndexType,
         ProbabilityManager::stringIndexType,
@@ -71,17 +71,17 @@ import kotlin.reflect.KFunction
 
         // Array init type
         ProbabilityManager::arrayInitDefault,
-        ProbabilityManager::arrayInitComprehension,
+        // ProbabilityManager::arrayInitComprehension,
         ProbabilityManager::arrayInitValues,
 
         // Additional data
         ProbabilityManager::methodStatements,
         ProbabilityManager::ifBranchStatements,
-         ProbabilityManager::forLoopBodyStatements,
-        ProbabilityManager::whileBodyStatements,
+        //  ProbabilityManager::forLoopBodyStatements,
+        // ProbabilityManager::whileBodyStatements,
         ProbabilityManager::mainFunctionStatements,
         ProbabilityManager::matchStatements,
-        ProbabilityManager::comprehensionIdentifiers,
+        // ProbabilityManager::comprehensionIdentifiers,
 
 //        ProbabilityManager::numberOfTraits,
 
@@ -92,14 +92,14 @@ import kotlin.reflect.KFunction
         ProbabilityManager::mutateAssertFalse
     )
 
-     private val UNSUPPORTED_FEATURES: Set<KFunction<*>> =
-         ComputeNonSupportedFeatures(SUPPORTED_FEATURES)
+    private val UNSUPPORTED_FEATURES: Set<KFunction<*>> =
+        ComputeNonSupportedFeatures(SUPPORTED_FEATURES)
 
-     override fun SupportedFeatures(): Set<KFunction<*>> {
-         return SUPPORTED_FEATURES
-     }
+    override fun SupportedFeatures(): Set<KFunction<*>> {
+        return SUPPORTED_FEATURES
+    }
 
-     override fun NonSupportedFeatures(): Set<KFunction<*>> {
-         return UNSUPPORTED_FEATURES
-     }
+    override fun NonSupportedFeatures(): Set<KFunction<*>> {
+        return UNSUPPORTED_FEATURES
+    }
 }
