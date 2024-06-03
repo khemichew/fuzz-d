@@ -61,12 +61,12 @@ class Fuzz : Subcommand("fuzz", "Generate programs to test Dafny") {
 
         // Parse backend target (Rust, C#, Python, JS, Go, Java)
         val backend = when (target) {
-            "rust" -> BackendTarget.RUST
+            "rs" -> BackendTarget.RUST
             "java" -> BackendTarget.JAVA
-            "javascript" -> BackendTarget.JAVASCRIPT
+            "js" -> BackendTarget.JAVASCRIPT
             "go" -> BackendTarget.GO
-            "python" -> BackendTarget.PYTHON
-            "csharp" -> BackendTarget.CSHARP
+            "py" -> BackendTarget.PYTHON
+            "cs" -> BackendTarget.CSHARP
             else -> BackendTarget.ALL
         }
 
