@@ -1,6 +1,9 @@
 package fuzzd.generator.selection.probability_manager
 
-class VerifierProbabilityManager(val probabilityManager: ProbabilityManager) : ProbabilityManager {
+class VerifierProbabilityManager(
+    val probabilityManager: ProbabilityManager,
+    private val maxTypeDepth: Int? = null
+) : ProbabilityManager {
     override fun classType(): Double = 0.0
     override fun traitType(): Double = 0.0
     override fun datatype(): Double = probabilityManager.datatype()
@@ -54,7 +57,8 @@ class VerifierProbabilityManager(val probabilityManager: ProbabilityManager) : P
     override fun literal(): Double = probabilityManager.literal()
     override fun constructor(): Double = probabilityManager.constructor()
     override fun comprehension(): Double = 0.0
-    override fun comprehensionConditionIntRange(): Double = probabilityManager.comprehensionConditionIntRange()
+    override fun comprehensionConditionIntRange(): Double =
+        probabilityManager.comprehensionConditionIntRange()
 
     // Index types
     override fun arrayIndexType(): Double = 0.0
@@ -80,6 +84,7 @@ class VerifierProbabilityManager(val probabilityManager: ProbabilityManager) : P
     override fun numberOfTraits(): Int = 0
 
     override fun maxNumberOfAssigns(): Int = probabilityManager.maxNumberOfAssigns()
+    override fun maxTypeDepth(): Int = maxTypeDepth ?: 3
 
     // Verification mutation
     override fun mutateVerificationCondition(): Double = 0.1

@@ -82,8 +82,8 @@ class SelectionManager(
             this::selectClassType to classTypeProb,
             this::selectTraitType to traitTypeProb,
             this::selectDatatypeType to datatypeProb,
-            this::selectArrayType to if (depth < MAX_TYPE_DEPTH && context.onDemandIdentifiers) probabilityManager.arrayType() / context.expressionDepth else 0.0,
-            this::selectDataStructureType to if (depth < MAX_TYPE_DEPTH) probabilityManager.datatstructureType() / context.expressionDepth else 0.0,
+            this::selectArrayType to if (depth < probabilityManager.maxTypeDepth() && context.onDemandIdentifiers) probabilityManager.arrayType() / context.expressionDepth else 0.0,
+            this::selectDataStructureType to if (depth < probabilityManager.maxTypeDepth()) probabilityManager.datatstructureType() / context.expressionDepth else 0.0,
             this::selectLiteralType to probabilityManager.literalType(),
         )
 
@@ -467,7 +467,6 @@ class SelectionManager(
         private const val MAX_FUNCTION_METHODS = 3
         private const val MAX_METHODS = 3
         private const val MAX_TRAIT_INHERITS = 2
-        private const val MAX_TYPE_DEPTH = 3
 
         private val LITERAL_TYPES = listOf(IntType, BoolType, CharType)
         private fun isLiteralType(type: Type) = type in LITERAL_TYPES

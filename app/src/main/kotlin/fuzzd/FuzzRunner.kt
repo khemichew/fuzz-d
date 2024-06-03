@@ -19,6 +19,7 @@ class FuzzRunner(private val dir: File, private val logger: Logger) {
 
     fun run(seed: Long, advanced: Boolean, instrument: Boolean, run: Boolean, swarm: Boolean, verifier: Boolean, backend: BackendTarget) {
         var excludedFeatures = SupportedFeaturesRetriever.BACKEND_SUPPORTED_FEATURES[backend]!!.NonSupportedFeatures()
+        val typeDepthLimit = SupportedFeaturesRetriever.MAX_TYPE_DEPTH(backend)
 
         if (swarm) {
             excludedFeatures = excludedFeatures.minus(
@@ -27,13 +28,13 @@ class FuzzRunner(private val dir: File, private val logger: Logger) {
         }
 
         val probabilityManager =
-            if (swarm) RandomProbabilityManager(seed, excludedFeatures)
-            else FeatureSupportedProbabilityManager(excludedFeatures)
+            if (swarm) RandomProbabilityManager(seed, excludedFeatures, typeDepthLimit)
+            else FeatureSupportedProbabilityManager(excludedFeatures, typeDepthLimit)
 
         val generator = Generator(
             SelectionManager(
                 Random(seed),
-                if (verifier) VerifierProbabilityManager(probabilityManager) else probabilityManager,
+                if (verifier) VerifierProbabilityManager(probabilityManager, typeDepthLimit) else probabilityManager,
             ),
             globalState = !verifier,
             verifier = verifier,

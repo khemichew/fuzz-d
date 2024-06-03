@@ -81,6 +81,7 @@ interface ProbabilityManager {
 
     fun numberOfTraits(): Int
 
+    fun maxTypeDepth(): Int
     fun maxNumberOfAssigns(): Int
 
     // verification mutation

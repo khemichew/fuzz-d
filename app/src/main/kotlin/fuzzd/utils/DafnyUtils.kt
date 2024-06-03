@@ -28,6 +28,12 @@ sealed class SupportedFeaturesRetriever {
             BackendTarget.JAVA to JavaBackendFeatures(),
             BackendTarget.ALL to AllBackendFeatures(),
         )
+
+        fun MAX_TYPE_DEPTH(target: BackendTarget): Int? =
+            when (target) {
+                BackendTarget.RUST -> 1
+                else -> null
+            }
     }
 }
 

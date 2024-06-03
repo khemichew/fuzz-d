@@ -82,6 +82,7 @@ class BaseProbabilityManager : ProbabilityManager {
 
     override fun numberOfTraits(): Int = 3
 
+    override fun maxTypeDepth(): Int = 3
     override fun maxNumberOfAssigns(): Int = 5
 
     // verification mutation
